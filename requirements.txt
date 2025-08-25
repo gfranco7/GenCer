@@ -1,3 +1,11 @@
+fastapi
+uvicorn[standard]
+pydantic
+python-dotenv
+msal
+pandas
+openpyxl
+requests
 Flask
 pandas
 openpyxl
