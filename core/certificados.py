@@ -92,8 +92,11 @@ async def convert_to_pdf(docx_file, pdf_file):
 GenCer (Repositorio GitHub):
 -agents: data_campus_agent.py
 -auth: auth_manager.py
+-core: certificados.py
+-one_drive: OD_manager.py
 -statics: logo, estilos, etc.
 -templates: index.html, success.html
+-tests: test_e2e.py
 -venv
 -certificados.py
 -onedrive_client.py

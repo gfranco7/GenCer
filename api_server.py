@@ -7,10 +7,9 @@ import pandas as pd
 import io
 import json
 from datetime import datetime
-from app.auth.auth_manager import AuthManager
-from app.one_drive.OD_manager import *
-
-from app.one_drive.OD_manager import OneDriveManager
+from auth.auth_manager import AuthManager
+from one_drive.OD_manager import *
+from one_drive.OD_manager import OneDriveManager
 
 app = FastAPI(
     title="OneDrive Manager API",
