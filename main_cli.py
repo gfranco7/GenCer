@@ -4,7 +4,6 @@ main_cli.py - Interfaz de línea de comandos para generar certificados
 
 Uso:
     python main_cli.py                    # Ejecutar flujo completo
-    python main_cli.py --dry-run         # Simular sin generar archivos
     python main_cli.py --verbose         # Modo verboso
     python main_cli.py --help            # Mostrar ayuda
 """
@@ -43,9 +42,9 @@ def verificar_requisitos():
         print(" Archivos requeridos no encontrados:")
         for archivo in faltantes:
             print(f"   - {archivo}")
-        print("\n💡 Instrucciones:")
+        print("\n Instrucciones:")
         if '.env' in faltantes:
-            print("   - Copia .env.example como .env y completa la configuración")
+            print("   - .env completa la configuración")
         if 'plantilla.docx' in faltantes:
             print("   - Coloca el archivo plantilla.docx en la raíz del proyecto")
         return False
@@ -150,7 +149,7 @@ Ejemplos:
             
     except ValueError as e:
         print(f" Error de configuración: {e}")
-        print(" Verifica tu archivo .env")
+        print(" Verificar archivo .env")
         return 1
     except KeyboardInterrupt:
         print("\n Proceso interrumpido por el usuario")

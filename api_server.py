@@ -215,7 +215,7 @@ async def download_file(
         
         return StreamingResponse(
             io.BytesIO(csv_buffer.getvalue().encode()),
-            media_type="text/csv",
+            media_type="",
             headers={"Content-Disposition": f"attachment; filename={filename}"}
         )
     except Exception as e:
@@ -223,26 +223,15 @@ async def download_file(
 
 @app.get("/files/{file_id}/content")
 async def get_file_content(
-    file_id: str,
-    manager: OneDriveManager = Depends(get_manager)
+    file_id: str
 ):
     try:
-        df = manager.read_excel_file(file_id)
-        
-        # Convertir DataFrame a formato JSON amigable para frontend
-        content = {
-            "columns": df.columns.tolist(),
-            "data": df.values.tolist(),
-            "shape": df.shape,
-            "info": {
-                "rows": len(df),
-                "columns": len(df.columns),
-                "column_types": df.dtypes.to_dict()
-            }
-        }
-        return content
+        df = od_manager.read_excel_file(file_id)
+        # Convertir DataFrame → lista de diccionarios
+        data = df.astype(str).to_dict(orient="records")
+        return {"status": "success", "rows": len(data), "data": data}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al leer archivo: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.put("/files/{file_id}/content")
 async def update_file_content(
@@ -258,6 +247,21 @@ async def update_file_content(
         return {"message": "Archivo actualizado exitosamente", "file_id": file_id}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al actualizar archivo: {str(e)}")
+
+@app.put("/files/{file_id}/update_certificados")
+async def update_certificados(file_id: str):
+    try:
+        df = od_manager.read_excel_file(file_id)
+
+        # Modificar: todos los "no" a "si" para que no se vuelvan a procesar
+        df.loc[df["certificado"] == "no", "certificado"] = "si"
+
+        result = od_manager.update_excel_file(file_id, df)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 
 @app.post("/files/upload")
 async def upload_file(

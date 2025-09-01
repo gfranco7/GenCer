@@ -1,8 +1,10 @@
 # config.py
 import os
 from dataclasses import dataclass
-from typing import Optional
+from dotenv import load_dotenv
 
+
+load_dotenv()
 @dataclass
 class CertificadosConfig:
     """Configuración para el sistema de certificados"""
@@ -22,7 +24,7 @@ class CertificadosConfig:
     columna_nombre: str = "nombre"
     columna_cedula: str = "cedula"
     
-    # Valores para marcar certificados
+    # Valores para marcar certificados 
     valor_pendiente: list = None
     valor_completado: str = "si"
     
@@ -61,7 +63,7 @@ class CertificadosConfig:
             errores.append("ID del archivo Excel no configurado")
         
         if errores:
-            print("❌ Errores de configuración:")
+            print(" Errores de configuración:")
             for error in errores:
                 print(f"  - {error}")
             return False

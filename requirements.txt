@@ -12,3 +12,9 @@ openpyxl
 PyMuPDF
 docxtpl
 docx2pdf
+aiofiles
+
+# Development
+pytest==7.4.3
+pytest-asyncio==0.21.1
+python-multipart

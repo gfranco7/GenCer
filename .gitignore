@@ -1,2 +1,4 @@
 /.env
 /venv
+/token_cache.bin
+__pycache__/

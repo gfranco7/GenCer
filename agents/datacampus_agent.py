@@ -8,7 +8,55 @@ import json
 
 logger = logging.getLogger(__name__)
 
-class DatacampusAgentMethods:
+class DatacampusAgent:
+    def __init__(self, base_url: str = "http://localhost:8000"):
+        self.base_url = base_url
+        self.token_ok = False
+        self.session = requests.Session()
+        self.token = None
+
+    def autenticar(self) -> bool:
+        """Realiza autenticación inicial"""
+        try:
+            headers = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+            response = self.session.post(
+                f"{self.base_url}/auth/login", 
+                headers=headers,
+                json={} 
+            )
+            response.raise_for_status()
+            data=response.json()
+
+            self.token = data.get("access_token", None)
+
+            
+            print(f"Status code: {response.status_code}")
+            print(f"Response headers: {dict(response.headers)}")
+            print(f"Response content: {response.text}")
+            
+            response.raise_for_status()
+            self.token_ok = True
+            return True
+            
+        except requests.exceptions.HTTPError as e:
+            print(f"Error HTTP de autenticación: {e}")
+            print(f"Response content: {e.response.text if e.response else 'No response'}")
+            return False
+        except Exception as e:
+            print(f"Error de autenticación: {e}")
+            return False
+        
+    def verificar_autenticacion(self) -> bool:
+        """Verifica si la autenticación sigue válida"""
+        try:
+            response = self.session.get(f"{self.base_url}/auth/status")
+            response.raise_for_status()
+            return True
+        except:
+            return False
     """
     Métodos adicionales para DatacampusAgent que podrías necesitar implementar
     Copia estos métodos a tu clase DatacampusAgent existente
@@ -16,14 +64,7 @@ class DatacampusAgentMethods:
     
     def crear_carpeta(self, nombre_carpeta: str, parent_folder_id: str = None) -> Optional[str]:
         """
-        Crea una carpeta en OneDrive o busca si ya existe
-        
-        Args:
-            nombre_carpeta: Nombre de la carpeta a crear
-            parent_folder_id: ID de la carpeta padre (None para raíz)
-            
-        Returns:
-            ID de la carpeta creada/encontrada o None si falla
+        Crea una carpeta en OneDrive o busca si ya existe !!!!1 REVISAR CREACION CARPETAS POR COMPAÑIA EN OD
         """
         try:
             # Primero buscar si la carpeta ya existe
@@ -37,6 +78,7 @@ class DatacampusAgentMethods:
                 'Authorization': f'Bearer {self.token}',
                 'Content-Type': 'application/json'
             }
+            logger.debug(f"Creando carpeta con headers: {headers}")
             
             # Determinar endpoint
             if parent_folder_id:
@@ -152,47 +194,16 @@ class DatacampusAgentMethods:
             return False
     
     def obtener_excel_como_json(self, file_id: str) -> Optional[Dict[str, Any]]:
-        """
-        Descarga un archivo Excel de OneDrive y lo convierte a JSON
-        
-        Args:
-            file_id: ID del archivo Excel en OneDrive
-            
-        Returns:
-            Dict con estructura: {
-                'columns': [lista de nombres de columnas],
-                'data': [lista de filas como listas],
-                'info': {'rows': número_de_filas}
-            }
-        """
+        """Obtiene el contenido de un archivo Excel como JSON"""
+        if not self.token_ok:
+            print("Autenticacion fallida")
+            return None
         try:
-            # Descargar archivo
-            excel_content = self._descargar_archivo(file_id)
-            if not excel_content:
-                return None
-            
-            # Procesar con pandas/openpyxl
-            import pandas as pd
-            from io import BytesIO
-            
-            # Leer Excel
-            df = pd.read_excel(BytesIO(excel_content))
-            
-            # Convertir a formato esperado
-            result = {
-                'columns': df.columns.tolist(),
-                'data': df.values.tolist(),
-                'info': {
-                    'rows': len(df),
-                    'columns': len(df.columns)
-                }
-            }
-            
-            logger.info(f"Excel procesado: {result['info']['rows']} filas, {result['info']['columns']} columnas")
-            return result
-            
+            response = self.session.get(f"{self.base_url}/files/{file_id}/content")
+            response.raise_for_status()
+            return response.json()
         except Exception as e:
-            logger.error(f"Error al procesar Excel: {str(e)}")
+            print(f"Error al obtener contenido del archivo: {e}")
             return None
     
     def _descargar_archivo(self, file_id: str) -> Optional[bytes]:
@@ -223,8 +234,7 @@ class DatacampusAgentMethods:
             logger.error(f"Error al descargar archivo: {str(e)}")
             return None
     
-    def crear_reporte(self, folder_id: str = None, nombre_archivo: str = "reporte.xlsx", 
-                     datos: Dict[str, list] = None) -> bool:
+    def crear_reporte(self, folder_id: str = None, nombre_archivo: str = "reporte.xlsx", datos: Dict[str, list] = None) -> bool:
         """
         Crea y sube un archivo Excel con datos
         
@@ -242,7 +252,7 @@ class DatacampusAgentMethods:
                 return False
             
             import pandas as pd
-            from io import BytesIO
+            from io import BytesIO  
             
             # Crear DataFrame
             df = pd.DataFrame(datos)
@@ -277,33 +287,7 @@ class DatacampusAgentMethods:
         except Exception as e:
             logger.error(f"Error al crear reporte: {str(e)}")
             return False
-    
-    def autenticar(self) -> bool:
-        """
-        Método base de autenticación (debes implementar según tu auth_manager)
-        
-        Returns:
-            True si la autenticación fue exitosa
-        """
-        try:
-            # Aquí deberías usar tu AuthManager existente
-            # Este es solo un ejemplo de estructura
-            
-            from auth.auth_manager import AuthManager
-            auth_manager = AuthManager()
-            
-            self.token = auth_manager.obtener_token()
-            
-            if self.token:
-                logger.info("Autenticación exitosa")
-                return True
-            else:
-                logger.error("Error en autenticación - token no obtenido")
-                return False
-                
-        except Exception as e:
-            logger.error(f"Error durante autenticación: {str(e)}")
-            return False
+
     
     def validar_token(self) -> bool:
         """
@@ -334,3 +318,4 @@ class DatacampusAgent(DatacampusAgentMethods):
         self.token = None
         # ... resto de tu inicialización
 """
+
