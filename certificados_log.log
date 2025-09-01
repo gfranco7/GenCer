@@ -191,3 +191,164 @@
 2025-09-01 10:56:54,191 - WARNING -      No se pudo crear carpeta: Ferrari
 2025-09-01 10:56:54,192 - INFO - 6) Actualizando Excel...
 2025-09-01 10:56:54,193 - ERROR -  Error al actualizar Excel: list indices must be integers or slices, not str
+2025-09-01 11:56:32,943 - INFO - === INICIANDO FLUJO DE CERTIFICADOS ===
+2025-09-01 11:56:32,943 - INFO - 1) Autenticando con Microsoft Graph...
+2025-09-01 11:56:37,286 - INFO -  Autenticación exitosa
+2025-09-01 11:56:37,287 - INFO - 2) Descargando Excel desde OneDrive...
+2025-09-01 11:56:39,105 - INFO -  Excel leído con 7 filas
+2025-09-01 11:56:39,106 - INFO - 3) Generando certificados PDF en memoria...
+2025-09-01 11:56:39,111 - ERROR -  Error al generar certificados: 'str' object has no attribute 'strftime'
+2025-09-01 11:56:39,112 - ERROR - Error en el flujo principal: 'str' object has no attribute 'strftime'
+2025-09-01 11:56:39,116 - ERROR - Traceback (most recent call last):
+  File "C:\Users\ia academy\Desktop\GFJL\AI_Academy\certificados_app\GenCer\tests\test_e2e.py", line 62, in ejecutar_flujo_completo
+    certificados_por_compania, df_actualizado = self._generar(cert_input=excel_dict)
+                                                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ia academy\Desktop\GFJL\AI_Academy\certificados_app\GenCer\tests\test_e2e.py", line 146, in _generar
+    certificados_por_compania, df_actualizado = asyncio.run(
+                                                ~~~~~~~~~~~^
+        generar_certificados_desde_excel(cert_input)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ia academy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\ia academy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\ia academy\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\ia academy\Desktop\GFJL\AI_Academy\certificados_app\GenCer\core\certificados.py", line 48, in generar_certificados_desde_excel
+    "FECHA": row["fecha"].strftime("%d/%m/%Y") if "fecha" in row and not pd.isna(row["fecha"]) else "",
+             ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'strftime'
+
+2025-09-01 12:00:59,152 - INFO - === INICIANDO FLUJO DE CERTIFICADOS ===
+2025-09-01 12:00:59,152 - INFO - 1) Autenticando con Microsoft Graph...
+2025-09-01 12:01:03,254 - INFO -  Autenticación exitosa
+2025-09-01 12:01:03,255 - INFO - 2) Descargando Excel desde OneDrive...
+2025-09-01 12:01:05,120 - INFO -  Excel leído con 7 filas
+2025-09-01 12:01:05,122 - INFO - 3) Generando certificados PDF en memoria...
+2025-09-01 12:27:19,510 - INFO - === INICIANDO FLUJO DE CERTIFICADOS ===
+2025-09-01 12:27:19,510 - INFO - 1) Autenticando con Microsoft Graph...
+2025-09-01 12:27:24,077 - INFO -  Autenticación exitosa
+2025-09-01 12:27:24,078 - INFO - 2) Descargando Excel desde OneDrive...
+2025-09-01 12:27:24,078 - ERROR -  EXCEL_FILE_ID no está configurado en .env
+2025-09-01 12:28:05,020 - INFO - === INICIANDO FLUJO DE CERTIFICADOS ===
+2025-09-01 12:28:05,020 - INFO - 1) Autenticando con Microsoft Graph...
+2025-09-01 12:28:09,018 - INFO -  Autenticación exitosa
+2025-09-01 12:28:09,019 - INFO - 2) Descargando Excel desde OneDrive...
+2025-09-01 12:28:11,011 - INFO -  Excel leído con 7 filas
+2025-09-01 12:28:11,013 - INFO - 3) Generando certificados PDF en memoria...
+2025-09-01 12:28:11,017 - INFO -  Generando certificado para Checo Pérez...
+2025-09-01 12:28:11,037 - INFO -  Render FULL
+2025-09-01 12:28:11,049 - INFO -   - DOCX generado en C:\Users\IAACAD~1\AppData\Local\Temp\tmp769ii6zw.docx
+2025-09-01 12:28:11,049 - INFO - Simulando conversion a PDF (Windows)
+2025-09-01 12:28:11,060 - ERROR -  Error al generar certificados: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\IAACAD~1\\AppData\\Local\\Temp\\tmp769ii6zw.docx'
+2025-09-01 12:28:11,060 - ERROR - Error en el flujo principal: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\IAACAD~1\\AppData\\Local\\Temp\\tmp769ii6zw.docx'
+2025-09-01 12:28:11,062 - ERROR - Traceback (most recent call last):
+  File "C:\Users\ia academy\Desktop\GFJL\AI_Academy\certificados_app\GenCer\tests\test_e2e.py", line 62, in ejecutar_flujo_completo
+    certificados_por_compania, df_actualizado = self._generar(cert_input=excel_dict)
+                                                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ia academy\Desktop\GFJL\AI_Academy\certificados_app\GenCer\tests\test_e2e.py", line 146, in _generar
+    certificados_por_compania, df_actualizado = asyncio.run(
+                                                ~~~~~~~~~~~^
+        generar_certificados_desde_excel(cert_input)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ia academy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\ia academy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\ia academy\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\ia academy\Desktop\GFJL\AI_Academy\certificados_app\GenCer\core\certificados.py", line 99, in generar_certificados_desde_excel
+    os.remove(tmp_docx.name)
+    ~~~~~~~~~^^^^^^^^^^^^^^^
+PermissionError: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\IAACAD~1\\AppData\\Local\\Temp\\tmp769ii6zw.docx'
+
+2025-09-01 12:28:50,851 - INFO - === INICIANDO FLUJO DE CERTIFICADOS ===
+2025-09-01 12:28:50,851 - INFO - 1) Autenticando con Microsoft Graph...
+2025-09-01 12:28:54,886 - ERROR -  Error en autenticación
+2025-09-01 12:29:07,392 - INFO - === INICIANDO FLUJO DE CERTIFICADOS ===
+2025-09-01 12:29:07,393 - INFO - 1) Autenticando con Microsoft Graph...
+2025-09-01 12:29:11,686 - INFO -  Autenticación exitosa
+2025-09-01 12:29:11,686 - INFO - 2) Descargando Excel desde OneDrive...
+2025-09-01 12:29:13,744 - INFO -  Excel leído con 7 filas
+2025-09-01 12:29:13,746 - INFO - 3) Generando certificados PDF en memoria...
+2025-09-01 12:29:13,750 - INFO -  Generando certificado para Checo Pérez...
+2025-09-01 12:29:13,770 - INFO -  Render FULL
+2025-09-01 12:29:13,791 - INFO -   - DOCX generado en C:\Users\IAACAD~1\AppData\Local\Temp\tmpo0w7p2we.docx
+2025-09-01 12:29:13,792 - INFO - Simulando conversion a PDF (Windows)
+2025-09-01 12:29:13,804 - ERROR -  Error al generar certificados: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\IAACAD~1\\AppData\\Local\\Temp\\tmpo0w7p2we.docx'
+2025-09-01 12:29:13,805 - ERROR - Error en el flujo principal: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\IAACAD~1\\AppData\\Local\\Temp\\tmpo0w7p2we.docx'
+2025-09-01 12:29:13,807 - ERROR - Traceback (most recent call last):
+  File "C:\Users\ia academy\Desktop\GFJL\AI_Academy\certificados_app\GenCer\tests\test_e2e.py", line 62, in ejecutar_flujo_completo
+    certificados_por_compania, df_actualizado = self._generar(cert_input=excel_dict)
+                                                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ia academy\Desktop\GFJL\AI_Academy\certificados_app\GenCer\tests\test_e2e.py", line 146, in _generar
+    certificados_por_compania, df_actualizado = asyncio.run(
+                                                ~~~~~~~~~~~^
+        generar_certificados_desde_excel(cert_input)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ia academy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\ia academy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\ia academy\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\ia academy\Desktop\GFJL\AI_Academy\certificados_app\GenCer\core\certificados.py", line 99, in generar_certificados_desde_excel
+    os.remove(tmp_docx.name)
+    ~~~~~~~~~^^^^^^^^^^^^^^^
+PermissionError: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\IAACAD~1\\AppData\\Local\\Temp\\tmpo0w7p2we.docx'
+
+2025-09-01 12:32:19,212 - INFO - === INICIANDO FLUJO DE CERTIFICADOS ===
+2025-09-01 12:32:19,213 - INFO - 1) Autenticando con Microsoft Graph...
+2025-09-01 12:32:23,295 - ERROR -  Error en autenticación
+2025-09-01 12:32:30,080 - INFO - === INICIANDO FLUJO DE CERTIFICADOS ===
+2025-09-01 12:32:30,081 - INFO - 1) Autenticando con Microsoft Graph...
+2025-09-01 12:32:34,330 - INFO -  Autenticación exitosa
+2025-09-01 12:32:34,330 - INFO - 2) Descargando Excel desde OneDrive...
+2025-09-01 12:32:36,143 - INFO -  Excel leído con 7 filas
+2025-09-01 12:32:36,145 - INFO - 3) Generando certificados PDF en memoria...
+2025-09-01 12:32:36,149 - INFO -  Generando certificado para Checo Pérez...
+2025-09-01 12:32:36,168 - INFO -  Render FULL
+2025-09-01 12:32:36,178 - INFO -   - DOCX generado en C:\Users\IAACAD~1\AppData\Local\Temp\tmppmx3ckw0.docx
+2025-09-01 12:32:36,178 - INFO - Simulando conversion a PDF (Windows)
+2025-09-01 12:32:36,190 - ERROR -  Error al generar certificados: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\IAACAD~1\\AppData\\Local\\Temp\\tmppmx3ckw0.docx'
+2025-09-01 12:32:36,190 - ERROR - Error en el flujo principal: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\IAACAD~1\\AppData\\Local\\Temp\\tmppmx3ckw0.docx'
+2025-09-01 12:32:36,192 - ERROR - Traceback (most recent call last):
+  File "C:\Users\ia academy\Desktop\GFJL\AI_Academy\certificados_app\GenCer\tests\test_e2e.py", line 62, in ejecutar_flujo_completo
+    certificados_por_compania, df_actualizado = self._generar(cert_input=excel_dict)
+                                                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ia academy\Desktop\GFJL\AI_Academy\certificados_app\GenCer\tests\test_e2e.py", line 146, in _generar
+    certificados_por_compania, df_actualizado = asyncio.run(
+                                                ~~~~~~~~~~~^
+        generar_certificados_desde_excel(cert_input)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ia academy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\ia academy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\ia academy\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\ia academy\Desktop\GFJL\AI_Academy\certificados_app\GenCer\core\certificados.py", line 99, in generar_certificados_desde_excel
+    os.remove(tmp_docx.name)
+    ~~~~~~~~~^^^^^^^^^^^^^^^
+PermissionError: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\IAACAD~1\\AppData\\Local\\Temp\\tmppmx3ckw0.docx'
+

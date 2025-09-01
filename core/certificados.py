@@ -1,3 +1,4 @@
+from asyncio.log import logger
 import io
 import os
 import platform
@@ -13,12 +14,7 @@ from docx2pdf import convert  # solo Windows
 ON_WINDOWS = platform.system() == "Windows"
 
 async def generar_certificados_desde_excel(excel_input) -> tuple[dict, pd.DataFrame]:
-    """
-    Genera certificados en memoria a partir de un Excel (ruta o dict).
-    Devuelve:
-        certificados_por_compania: {compañía: [{"filename": str, "content": bytes}, ...]}
-        df: DataFrame actualizado con 'certificado' marcado en "si".
-    """
+
 
     # === 1) Convertimos excel_input a DataFrame ===
     if isinstance(excel_input, (str, os.PathLike)):
@@ -38,29 +34,50 @@ async def generar_certificados_desde_excel(excel_input) -> tuple[dict, pd.DataFr
 
     plantilla = DocxTemplate("plantilla.docx")
     certificados_por_compania = defaultdict(list)
+    
 
     # === 2) Procesar cada fila pendiente ===
     for idx, row in df.iterrows():
         if str(row["certificado"]).lower() == "no":
+            fecha_val = row.get("fecha", "")
+            fecha_fmt = ""
+            if pd.notna(fecha_val) and fecha_val != "":
+                try:
+                    if isinstance(fecha_val, str):
+                        # Intento parsear con pandas
+                        fecha_dt = pd.to_datetime(fecha_val, errors="coerce")
+                    else:
+                        fecha_dt = fecha_val
+                    if pd.notna(fecha_dt):
+                        fecha_fmt = fecha_dt.strftime("%d/%m/%Y")
+                except Exception:
+                    fecha_fmt = str(fecha_val)
+
             contexto = {
                 "NOMBRE": row.get("nombre", ""),
                 "CEDULA": row.get("cedula", ""),
-                "FECHA": row["fecha"].strftime("%d/%m/%Y") if "fecha" in row and not pd.isna(row["fecha"]) else "",
-                "COMPANIA": row.get("compañia", "Desconocida")
+                "HORAS": row.get("horas", ""),
+                "COMPANIA": row.get("compañia", ""),
+                "FECHA": fecha_fmt,
             }
+
 
             nombre_base = f"certificado_{contexto['NOMBRE'].replace(' ', '_')}.pdf"
 
             # Crear DOCX temporal
             with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmp_docx:
+                logger.info(f" Generando certificado para {contexto['NOMBRE']}...")
                 plantilla.render(contexto)
+                logger.info(f" Render FULL")
                 plantilla.save(tmp_docx.name)
+                logger.info(f"  - DOCX generado en {tmp_docx.name}")
 
                 # Crear PDF temporal
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_pdf:
                     if ON_WINDOWS:
                         # docx2pdf
-                        await asyncio.to_thread(convert, tmp_docx.name, tmp_pdf.name)
+                        #await asyncio.to_thread(convert, tmp_docx.name, tmp_pdf.name)
+                        logger.info("Simulando conversion a PDF (Windows)")
                     else:
                         # LibreOffice
                         process = await asyncio.create_subprocess_exec(
@@ -70,7 +87,7 @@ async def generar_certificados_desde_excel(excel_input) -> tuple[dict, pd.DataFr
                         await process.communicate()
 
                     # Leer PDF en memoria
-                    with open(tmp_pdf.name, "rb") as f:
+                    with open(tmp_docx.name, "rb") as f:
                         pdf_bytes = f.read()
 
                     certificados_por_compania[contexto["COMPANIA"]].append({

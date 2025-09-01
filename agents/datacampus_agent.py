@@ -57,10 +57,6 @@ class DatacampusAgent:
             return True
         except:
             return False
-    """
-    Métodos adicionales para DatacampusAgent que podrías necesitar implementar
-    Copia estos métodos a tu clase DatacampusAgent existente
-    """
     
     def crear_carpeta(self, nombre_carpeta: str, parent_folder_id: str = None) -> Optional[str]:
         """
@@ -288,14 +284,25 @@ class DatacampusAgent:
             logger.error(f"Error al crear reporte: {str(e)}")
             return False
 
+    def actualizar_archivo_por_id(self, file_id: str, content: bytes) -> bool:
+        try:
+            url = f"https://graph.microsoft.com/v1.0/me/drive/items/{file_id}/content"
+            headers = {
+                "Authorization": f"Bearer {self.token}",
+                "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            }
+            response = requests.put(url, headers=headers, data=content)
+            if response.status_code in (200, 201):
+                return True
+            else:
+                print(f"Error al actualizar archivo: {response.status_code} - {response.text}")
+                return False
+        except Exception as e:
+            print(f"Excepción al actualizar archivo: {str(e)}")
+            return False
+
     
     def validar_token(self) -> bool:
-        """
-        Valida si el token actual sigue siendo válido
-        
-        Returns:
-            True si el token es válido
-        """
         try:
             headers = {
                 'Authorization': f'Bearer {self.token}'
@@ -311,7 +318,6 @@ class DatacampusAgent:
             logger.error(f"Error al validar token: {str(e)}")
             return False
 
-# Ejemplo de uso de estos métodos en tu DatacampusAgent existente:
 """
 class DatacampusAgent(DatacampusAgentMethods):
     def __init__(self):
